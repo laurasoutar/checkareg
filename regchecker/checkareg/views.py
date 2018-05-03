@@ -6,6 +6,7 @@ from django.conf import settings
 import base64, requests, json
 from django import forms
 import urllib
+import datetime
 
 _regno = ''
 
@@ -145,5 +146,5 @@ def checkPNC(request):
         'FirstName': person[0]['FirstName'],
         'LastName': person[0]['LastName'],
         'DOB': person[0]['DateOfBirth'],
-        'Address': person[0]['Address'],
+        'Address': person[0]['Address']['Line1'],
         'Incidents': incidents})  
