@@ -4,20 +4,31 @@
 {% block content %}
 {% if numbervalue %}
 
-<div class="card">
-    <h6 class="card-subtitle mb-2 text-muted">Registration Number</h6>
-    <div class="card-body">
-        <p class="card-text">{{ numbervalue }}</p>
-    </div>
-    <h6 class="card-subtitle mb-2 text-muted">Car Make</h6>
-    <div class="card-body">
-        <p class="card-text">{{ makevalue }}</p>
-    </div>
+<div class="alert alert-primary" role="alert" style="padding-left: 25%; padding-right: 25%">
+	<div class="row">
+		<div class="col">
+			<h3 style="font-weight: bold;">Registration Number :</h3>
+		</div>
+		<div class="col">
+			<h3>{{numbervalue}}</h3>
+		</div>
+	</div>  
+</div>
+
+<div class="alert alert-primary" role="alert" style="padding-left: 25%; padding-right: 25%">
+	<div class="row">
+		<div class="col">
+			<h3 style="font-weight: bold">Car Make : </h3>
+		</div>
+		<div class="col">
+			<h3>{{makevalue}}</h3>
+		</div>
+	</div>  
 </div>
 
 {% endif %}
-
 <h3>Are these details correct?</h3>
-<a class="btn btn-default" href="{% url 'checkPNC' %}"><span class="glyphicon glyphicon-pencil"></span></a>
+<a class="btn btn-primary btn-lg"  href="{% url 'checkPNC' %}">Perform Vehicle Check</a>
 
 {% endblock %}
+

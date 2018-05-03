@@ -119,10 +119,15 @@ def checkPNC(request):
     _regno = _regno.strip()
     params = {"VehicleReg": _regno}
     url = "http://codeitteam3.westeurope.cloudapp.azure.com/api/vehicles?%s" %(urllib.parse.urlencode(params))
-
     r = requests.get(url, auth=('admin@civica.local', 'password123'))
     
     vehicle = json.loads(r.text)
-    return render(request, 'checkareg/success.html', {'status': r.status_code, 'data': vehicle, 'regno': _regno, 'url': url})
-
-        
+    return render(request, 'checkareg/success.html', 
+        {'status': r.status_code, 
+        'VehicleReg': vehicle[0]['VehicleReg'], 
+        'Colour' : vehicle[0]['Colour'], 
+        'Make' : vehicle[0]['Make'],
+        'Model' : vehicle[0]['Model'],
+        'VIN' : vehicle[0]['VIN'],
+        'regno': _regno, 
+        'url': url})  
