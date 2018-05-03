@@ -4,6 +4,9 @@ from django.http import HttpResponse, JsonResponse
 from django.views.generic import TemplateView
 from django.conf import settings
 import base64, requests, json
+from django import forms
+
+_regno = ''
 
 # Create your views here.
 def post_list(request):
@@ -41,6 +44,9 @@ def get_reg(request):
         # get Feature result and score     
         (makevalue, numbervalue) = getFeatureResultAndScoreFromJsonResponse(json_resp)
   
+        global _regno
+        _regno = numbervalue
+
         # render a view to contain the results 
         return render(request, 'checkareg/confirmation.html', {
 
@@ -106,5 +112,11 @@ def extractMakeFromResponse( json_resp ):
        # score = 0
     return make
 
+# check licence plate against PNC
+def checkPNC(request): 
+    url = 'http://codeitteam3.westeurope.cloudapp.azure.com/api/vehicles?VehicleReg='+_regno
+    r = requests.get(url, auth=('admin@civica.local', 'password123'))
+    vehicle = json.loads(r.text)
+    return render(request, 'checkareg/success.html', {'status': r.status_code, 'data': vehicle, 'regno': _regno, 'url': url})
 
         
