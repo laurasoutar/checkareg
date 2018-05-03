@@ -91,8 +91,14 @@ def extractNumberFromResponse( json_resp ):
 
 # extract logo name from json (dict)
 def extractMakeFromResponse( json_resp ):
+    car_array = ['range rover', 'lamborghini', 'kia motors']
     try:
-        make = json_resp['responses'][0]['labelAnnotations'][0]['description']
+        for desc in json_resp['responses'][0]['labelAnnotations']:
+            for car in car_array:
+                if(car ==  desc['description']):
+                    make = desc['description']
+                    
+        #make = json_resp['responses'][0]['labelAnnotations'][0]['description']
         #score = json_resp['responses'][0]['labelAnnotations'][0]['score']
     except (IndexError, KeyError) :
         make = 'Error parsing response'
