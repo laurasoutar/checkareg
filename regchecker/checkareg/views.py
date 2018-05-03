@@ -119,7 +119,21 @@ def checkPNC(request):
     _regno = _regno.strip()
     params = {"VehicleReg": _regno}
     url = "http://codeitteam3.westeurope.cloudapp.azure.com/api/vehicles?%s" %(urllib.parse.urlencode(params))
-    r = requests.get(url, auth=('admin@civica.local', 'password123'))
+
+    v = requests.get(url, auth=('admin@civica.local', 'password123'))
+    vehicle = json.loads(v.text)
+
+    #bring back incidents for a given vehicle
+    params2 = {"VehicleID": vehicle[0]['ID']}
+    url2 = "http://codeitteam3.westeurope.cloudapp.azure.com/api/incidents?%s" %(urllib.parse.urlencode(params2))
+    i = requests.get(url2, auth=('admin@civica.local', 'password123'))
+    incidents = json.loads(i.text)
+
+    #bring person back
+    params3 = {"VehicleReg": vehicle[0]['VehicleReg']}
+    url3 = "http://codeitteam3.westeurope.cloudapp.azure.com/api/people?%s" %(urllib.parse.urlencode(params3))
+    p = requests.get(url3, auth=('admin@civica.local', 'password123'))
+    person = json.loads(p.text)
     
     vehicle = json.loads(r.text)
     return render(request, 'checkareg/success.html', 
@@ -130,4 +144,8 @@ def checkPNC(request):
         'Model' : vehicle[0]['Model'],
         'VIN' : vehicle[0]['VIN'],
         'regno': _regno, 
-        'url': url})  
+        'FirstName': person[0]['FirstName'],
+        'LastName': person[0]['LastName'],
+        'DOB': person[0]['DateOfBirth'],
+        'Address': person[0]['Address'],
+        'Incidents': incidentsss})  
