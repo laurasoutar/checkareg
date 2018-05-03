@@ -20,12 +20,15 @@
    </div>
 </div>
 
-{% if value %}
+{% if makevalue %}
 <div class="card">
-    <h5 class="card-title">Extracting {{ feature }} feature</h5>
-    <h6 class="card-subtitle mb-2 text-muted">Reliability Score {{ score }}</h6>
+    <h6 class="card-subtitle mb-2 text-muted">Registration Number</h6>
     <div class="card-body">
-        <p class="card-text">{{ value }}</p>
+        <p class="card-text">{{ numbervalue }}</p>
+    </div>
+    <h6 class="card-subtitle mb-2 text-muted">Car Make</h6>
+    <div class="card-body">
+        <p class="card-text">{{ makevalue }}</p>
     </div>
 </div>
 

@@ -4,7 +4,6 @@ from django.http import HttpResponse, JsonResponse
 from django.views.generic import TemplateView
 from django.conf import settings
 import base64, requests, json
-import webcolors
 
 # Create your views here.
 def post_list(request):
@@ -31,7 +30,7 @@ def get_reg(request):
         #feature = request.POST["feature"]
 
         # construct feature API query object to contain base64 string
-        data = constructFeatureQuery("text", encoded_string)
+        data = constructFeatureQuery(encoded_string)
 
         #  sending Cloud Vision API post request and saving response as json
         response = requests.post(url = API_ENDPOINT, json = data)
@@ -40,13 +39,13 @@ def get_reg(request):
         json_resp = response.json()
 
         # get Feature result and score     
-        (value, score) = getFeatureResultAndScoreFromJsonResponse("text", json_resp)
+        (makevalue, numbervalue) = getFeatureResultAndScoreFromJsonResponse(json_resp)
   
         # render a view to contain the results 
         return render(request, 'checkareg/get_reg.html', {
-            'feature' : "text",
-            'value': value,
-            'score': score,
+            'feature' : "logo",
+            'makevalue': makevalue,
+            'numbervalue': numbervalue,
             'json' : json_resp
         })
     
@@ -54,28 +53,13 @@ def get_reg(request):
     return render(request, 'checkareg/get_reg.html')
 
         # extract result value and reliability score from response
-def getFeatureResultAndScoreFromJsonResponse(feature, json_resp):
-    if feature == "colour":
-        # extract colour from json (dict)
-        (value,score) = extractColourFromResponse(json_resp)
-    elif feature == "logo":
-        # extract logo from json (dict)
-        (value,score) = extractLogoFromResponse(json_resp)
-    else: 
-        # extract number text from json (dict)
-        value = extractNumberFromResponse(json_resp)
-        score = 1
-    return (value, score)
+def getFeatureResultAndScoreFromJsonResponse(json_resp):
+    makevalue = extractMakeFromResponse(json_resp)
+    numbervalue = extractNumberFromResponse(json_resp)
+    return (makevalue, numbervalue)
 
 # construct and return a Cloud Vision Json Query object for required feature 
-def constructFeatureQuery(feature, encoded_string):
-    if feature == 'colour':
-        ftype = "IMAGE_PROPERTIES"
-    elif feature == "logo":
-        ftype = "LOGO_DETECTION"
-    else:
-        ftype = "TEXT_DETECTION"
-
+def constructFeatureQuery(encoded_string):
     data = {
             "requests":[
                 {
@@ -84,7 +68,10 @@ def constructFeatureQuery(feature, encoded_string):
                     },
                     "features":[
                         {
-                            "type": ftype
+                            "type": "TEXT_DETECTION"
+                        },
+                        {
+                            "type": "LABEL_DETECTION"
                         }
                     ]
                 }
@@ -103,34 +90,14 @@ def extractNumberFromResponse( json_resp ):
     return number
 
 # extract logo name from json (dict)
-def extractLogoFromResponse( json_resp ):
+def extractMakeFromResponse( json_resp ):
     try:
-        logo = json_resp['responses'][0]['logoAnnotations'][0]['description']
-        score = json_resp['responses'][0]['logoAnnotations'][0]['score']
+        make = json_resp['responses'][0]['labelAnnotations'][0]['description']
+        #score = json_resp['responses'][0]['labelAnnotations'][0]['score']
     except (IndexError, KeyError) :
-        logo = 'Error parsing response'
-        score = 0
-    return (logo,score)
+        make = 'Error parsing response'
+       # score = 0
+    return make
 
-# extract closest colour from json (dict)
-def extractColourFromResponse( json_resp ):
-    try:
-        rgb_colour = json_resp['responses'][0]['imagePropertiesAnnotation']['dominantColors']['colors'][0]['color']        
-        colour = closest_colour(rgb_colour)
-        score = json_resp['responses'][0]['imagePropertiesAnnotation']['dominantColors']['colors'][0]['score']
-    except (IndexError, KeyError) :
-        colour = 'Error parsing response'
-    return (colour,score)
-
-# determine closest color name from rgb colour parameter
-def closest_colour(requested_colour):
-    min_colours = {}
-    for key, name in webcolors.css3_hex_to_names.items():
-        r_c, g_c, b_c = webcolors.hex_to_rgb(key)
-        rd = (r_c - requested_colour['red']) ** 2
-        gd = (g_c - requested_colour['green']) ** 2
-        bd = (b_c - requested_colour['blue']) ** 2
-        min_colours[(rd + gd + bd)] = name
-    return min_colours[min(min_colours.keys())]
 
         
