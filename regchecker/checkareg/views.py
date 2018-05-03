@@ -42,7 +42,7 @@ def get_reg(request):
         (makevalue, numbervalue) = getFeatureResultAndScoreFromJsonResponse(json_resp)
   
         # render a view to contain the results 
-        return render(request, 'checkareg/get_reg.html', {
+        return render(request, 'checkareg/results.html', {
             'feature' : "logo",
             'makevalue': makevalue,
             'numbervalue': numbervalue,

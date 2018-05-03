@@ -4,7 +4,7 @@
 {% block content %}
 <div class="card">
    <div class="card-body">
-         <h5 class="card-title">Google Cloud Vision API</h5>
+         <h5 class="card-title">Vehicle Image Upload</h5>
    
          <form method="post" enctype="multipart/form-data">
            {% csrf_token %}
@@ -19,19 +19,4 @@
 
    </div>
 </div>
-
-{% if makevalue %}
-<div class="card">
-    <h6 class="card-subtitle mb-2 text-muted">Registration Number</h6>
-    <div class="card-body">
-        <p class="card-text">{{ numbervalue }}</p>
-    </div>
-    <h6 class="card-subtitle mb-2 text-muted">Car Make</h6>
-    <div class="card-body">
-        <p class="card-text">{{ makevalue }}</p>
-    </div>
-</div>
-
-{% endif %}
-
 {% endblock %}

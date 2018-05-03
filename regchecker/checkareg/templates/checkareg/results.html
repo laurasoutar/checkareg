@@ -1,0 +1,22 @@
+
+{% extends 'checkareg/base.html' %}
+
+{% block content %}
+{% if makevalue %}
+
+<div class="card">
+    <h6 class="card-subtitle mb-2 text-muted">Registration Number</h6>
+    <div class="card-body">
+        <p class="card-text">{{ numbervalue }}</p>
+    </div>
+    <h6 class="card-subtitle mb-2 text-muted">Car Make</h6>
+    <div class="card-body">
+        <p class="card-text">{{ makevalue }}</p>
+    </div>
+</div>
+
+{% endif %}
+
+<input class="btn btn-primary" type="submit" value="Submit Vehicle Check"></button>
+
+{% endblock %}
