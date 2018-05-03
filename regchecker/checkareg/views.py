@@ -43,6 +43,7 @@ def get_reg(request):
   
         # render a view to contain the results 
         return render(request, 'checkareg/confirmation.html', {
+
             'feature' : "logo",
             'makevalue': makevalue,
             'numbervalue': numbervalue,
