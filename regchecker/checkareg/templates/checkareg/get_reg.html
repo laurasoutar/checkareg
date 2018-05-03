@@ -1,0 +1,22 @@
+
+{% extends 'checkareg/base.html' %}
+
+{% block content %}
+<div class="card">
+   <div class="card-body">
+         <h5 class="card-title">Google Cloud Vision API</h5>
+   
+         <form method="post" enctype="multipart/form-data">
+           {% csrf_token %}
+
+           <div class="form-group">
+               <small id="imageHelp" class="form-text text-muted">Select the image to submit</small>            
+               <input type="file" class="form-control"  name="imagefile" id="imagefile" aria-describedby="imageHelp" placeholder="Select file">
+            </div>
+
+           <button type="submit" class="btn btn-primary">Upload</button>
+       </form>
+
+   </div>
+</div>
+{% endblock %}
