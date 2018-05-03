@@ -92,7 +92,7 @@ def extractNumberFromResponse( json_resp ):
 
 # extract logo name from json (dict)
 def extractMakeFromResponse( json_resp ):
-    car_array = ['range rover', 'lamborghini', 'kia motors']
+    car_array = ['range rover', 'lamborghini', 'fiat 500', 'mini cooper']
     try:
         for desc in json_resp['responses'][0]['labelAnnotations']:
             for car in car_array:
