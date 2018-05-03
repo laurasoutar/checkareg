@@ -135,10 +135,8 @@ def checkPNC(request):
     p = requests.get(url3, auth=('admin@civica.local', 'password123'))
     person = json.loads(p.text)
     
-    vehicle = json.loads(r.text)
     return render(request, 'checkareg/success.html', 
-        {'status': r.status_code, 
-        'VehicleReg': vehicle[0]['VehicleReg'], 
+        {'VehicleReg': vehicle[0]['VehicleReg'], 
         'Colour' : vehicle[0]['Colour'], 
         'Make' : vehicle[0]['Make'],
         'Model' : vehicle[0]['Model'],
@@ -148,4 +146,4 @@ def checkPNC(request):
         'LastName': person[0]['LastName'],
         'DOB': person[0]['DateOfBirth'],
         'Address': person[0]['Address'],
-        'Incidents': incidentsss})  
+        'Incidents': incidents})  
